@@ -16,7 +16,10 @@ qt_add_executable(appQtUiAssessment
     avatarprovider.h avatarprovider.cpp
 
     chatmodel.h chatmodel.cpp
+    profilemodel.cpp profilemodel.h
+
     fontawesome/fontawesome.qrc
+    res.qrc
 )
 
 qt_add_qml_module(appQtUiAssessment
@@ -30,8 +33,24 @@ qt_add_qml_module(appQtUiAssessment
         components/ChatView.qml
         components/AwesomeIconButton.qml
         components/ChatPost.qml
+        components/Badge.qml
 )
 
+qt_add_resources(appQtUiAssessment "app_icons"
+    PREFIX "/"
+    FILES
+        icons/more.png
+        icons/at.png
+        icons/bookmark.png
+        icons/hash.png
+        icons/quick.png
+)
+
+qt_add_resources(appQtUiAssessment "app_fonts"
+    PREFIX "/fonts"
+    FILES
+        fontawesome/fontawesome.ttf
+)
 set_target_properties(appQtUiAssessment PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
@@ -40,7 +59,9 @@ set_target_properties(appQtUiAssessment PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-
+add_definitions(appQtUiAssessment
+    -DAVATAR_DIRS="${CMAKE_CURRENT_SOURCE_DIR}/avatars"
+)
 
 target_link_libraries(appQtUiAssessment
     PRIVATE Qt6::Quick

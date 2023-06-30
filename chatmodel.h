@@ -26,6 +26,8 @@ public:
         AuthorRole,
         TextRole,
         RepliesRole,
+        AuthTimeRole,
+        AuthDateRole,
         AuthDateTimeRole,
         LastReplyDateTimeRole,
         ReactionsRole

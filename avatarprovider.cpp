@@ -1,5 +1,7 @@
 #include "avatarprovider.h"
 
+#include <QGuiApplication>
+
 AvatarProvider::AvatarProvider() : QQuickImageProvider{QQuickImageProvider::Pixmap}
 {
 
@@ -7,5 +9,9 @@ AvatarProvider::AvatarProvider() : QQuickImageProvider{QQuickImageProvider::Pixm
 
 QPixmap AvatarProvider::requestPixmap(const QString &id, QSize *size, const QSize &requestedSize)
 {
-    return QPixmap{"/doc/dev/tmp/QtUiAssessment/avatars/" + id + ".png"};
+#ifdef QT_DEBUG
+    return QPixmap{AVATAR_DIRS "/" + id.toLower() + ".png"};
+#else
+    return QPixmap{qApp->applicationDirPath() + "/avatars/" + id.toLower() + ".png"};
+#endif
 }

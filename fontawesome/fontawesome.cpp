@@ -6,16 +6,14 @@
 #endif
 
 #include <QFontDatabase>
-#include "tool/_fontawesome_defines.h"
+//#include "tool/_fontawesome_defines.h"
 
 #if QT_QML_LIB
 bool FontAwesome::init(const QQmlApplicationEngine *engine)
 {
-    auto n = QFontDatabase::addApplicationFont("/doc/dev/tmp/QtUiAssessment/fontawesome/fontawesome.ttf");
+    auto n = QFontDatabase::addApplicationFont(":/fonts/fontawesome/fontawesome.ttf");
     qDebug() << "Fontawesome adedd to app: " << n;
     engine->rootContext()->setContextProperty("FontAwesome", "FontAwesome");
-
-//    __fa_foreach(CONTEXT_PROPERTY)
 
 
     engine->rootContext()->setContextProperty("fa_adjust", "\uf042");

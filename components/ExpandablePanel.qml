@@ -8,17 +8,30 @@ Item {
     property alias delegate: repeater.delegate
     property string title
 
-    height: header.height + (isOpen ? itemsLayout.height : 0)
-    Rectangle {
+    clip: true
+
+    height: header.height + (itemsLayout.height * itemsLayout.opacity)
+    Item {
         id: header
-        color: 'red'
+
         height: 30
         clip: true
         width: parent.width
 
-        Text {
-            text: panel.title + panel.isOpen
-            color: "white"
+        RowLayout {
+            Text {
+                font.family: FontAwesome
+                text: fa_caret_down
+                rotation: isOpen ? 0 : -90
+                color: "white"
+
+                Behavior on rotation { NumberAnimation {} }
+            }
+
+            Text {
+                text: panel.title
+                color: "white"
+            }
         }
 
         MouseArea {
@@ -28,7 +41,9 @@ Item {
     }
     ColumnLayout {
         id: itemsLayout
-        visible: panel.isOpen
+        visible: opacity > 0
+        opacity: isOpen ? 1 : 0
+        Behavior on opacity { NumberAnimation{} }
 
         anchors{
             top: header.bottom

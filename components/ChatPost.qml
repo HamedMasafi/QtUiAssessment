@@ -1,17 +1,19 @@
 import QtQuick
-import QtQuick.Controls 6.3
-import QtQuick.Layouts 6.3
+import QtQuick.Controls
+import QtQuick.Layouts
 
 Item {
     id: item1
     property string message: ''
     property string author: ''
+    property string authTime: ''
+    property string lastReplyTime: ''
+    property list<string> replies
 
     height: labelMessage.height + itemHeader.height + itemFooter.height + 16
 
     //    width: 300
     //    height: 300
-    //    property list<string> replies
 
     Image {
         id: imageAvatar
@@ -19,7 +21,7 @@ Item {
         y: 0
         width: 32
         height: 32
-        //        source: "qrc:/qtquickplugin/images/template_image.png"
+        source: "image://avatar/" + author.toLowerCase()
         fillMode: Image.PreserveAspectFit
     }
 
@@ -45,7 +47,7 @@ Item {
         Label {
             id: label2
             color: "#666666"
-            text: qsTr("6:49 PM --- ")
+            text: authTime
             font.pointSize: 8
             Layout.alignment: Qt.AlignVCenter
         }
@@ -70,8 +72,8 @@ Item {
 
     RowLayout {
         id: itemFooter
-        y: 238
-        height: 44
+
+        height: 24
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
@@ -80,19 +82,36 @@ Item {
         anchors.rightMargin: 9
         Layout.fillWidth: true
 
-        //            Repeater{
-        //                model: replies
-        //            }
-        //            Label{
-        //                text: {
-        //                    if (replies.length == 0)
-        //                        return "No replies"
-        //                    else if (replies.length == 1)
-        //                        return "1 reply"
-        //                    else
-        //                        return replies.length + " replies"
-        //                }
-        //            }
+        Repeater{
+            model: replies
+            Image {
+                Layout.preferredHeight: 24
+                Layout.preferredWidth: 24
+                sourceSize: Qt.size(24, 24)
+                source: "image://avatar/" + modelData
+                fillMode: Image.PreserveAspectFit
+            }
+        }
+        Label{
+            color: "#3C71A6"
+            text: {
+                if (replies.length == 0)
+                    return "No replies"
+                else if (replies.length == 1)
+                    return "1 reply"
+                else
+                    return replies.length + " replies"
+            }
+        }
+        Label {
+            color: 'gray'
+            visible: replies.length > 0 && lastReplyTime != ''
+            text: "Last reply at " + lastReplyTime
+        }
+
+        Item{
+            Layout.fillWidth: true
+        }
     }
 }
 

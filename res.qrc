@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/quick.png</file>
+        <file>icons/more.png</file>
+        <file>icons/hash.png</file>
+        <file>icons/bookmark.png</file>
+        <file>icons/at.png</file>
+        <file>icons/1</file>
+        <file>components/Badge.qml</file>
+    </qresource>
+</RCC>

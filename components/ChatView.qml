@@ -3,7 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Controls
 import QtUiAssessment
 
-Control {
+Page {
     id: item2
 
     ChatModel {
@@ -12,15 +12,9 @@ Control {
 
     Component.onCompleted: chatModel.fillSampleData()
 
-    Item {
+    header: Rectangle {
         id: header
         height: 73
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.rightMargin: 0
-        anchors.leftMargin: 0
-        anchors.topMargin: 0
 
         RowLayout {
             id: rowLayout
@@ -46,56 +40,87 @@ Control {
                 }
             }
         }
+        Rectangle {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: header.bottom
+            height: 1
+            color: 'gray'
+        }
 
     }
 
-    ListView {
-        id: listView
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: header.bottom
-        anchors.bottom: writeBox.top
-        clip: true
-        model: chatModel
-        section.property: "authDateTime"
-        section.delegate: Rectangle{
-            color: 'red'
-            height: 10
-        }
-
-        delegate: ChatPost {
-            message: "MSG:"+model.message
-            author: model.author
+    Component {
+        id: sectionComponent
+        Item {
+            required property string section
+            height: 30
             width: parent.width
-        }
-    }
 
-    /*ScrollView {
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.top: header.bottom
-        anchors.bottom: writeBox.top
-        ColumnLayout {
-            width: parent.width
-            Repeater {
-                model: chatModel
-                delegate: ChatPost {
-                    message: "MSG:"+model.message
-                    author: model.author
-                    height: 100
-                    width: parent.width
+            Rectangle{
+                color: 'gray'
+                anchors{
+                    left: parent.left
+                    right: parent.right
+                    verticalCenter: parent.verticalCenter
+                }
+                height: 1
+            }
+
+            Rectangle{
+                anchors{
+                    topMargin: -4
+                    leftMargin: -7
+                    rightMargin: -7
+                    bottomMargin: -4
+                    fill: layoutLabel
+                }
+                radius: 9
+                border.width: 1
+                border.color: 'gray'
+            }
+            RowLayout {
+                id: layoutLabel
+                anchors.centerIn: parent
+                Label {
+                    id: labelSection
+                    text: section
+                }
+                Label {
+                    font.family: FontAwesome
+                    text: fa_chevron_down
                 }
             }
         }
-    }*/
+    }
 
-    Item {
+    Rectangle {
+        anchors.fill: parent
+
+        ListView {
+            id: listView
+            clip: true
+            model: chatModel
+            anchors.fill: parent
+
+            section.criteria: ViewSection.FullString
+            section.property: "authDate"
+            section.delegate: sectionComponent
+
+            delegate: ChatPost {
+                message: model.message
+                author: model.author
+                authTime: model.authTime
+                replies: model.replies
+                lastReplyTime: model.lastReplyDateTime
+
+                width: parent == null ? 0 :  parent.width
+            }
+        }
+    }
+    footer: Rectangle {
         id: writeBox
-        y: 393
         height: 110
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.bottom: parent.bottom
 
         Rectangle {
             id: rectangle
